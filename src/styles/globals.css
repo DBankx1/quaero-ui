@@ -1,6 +1,51 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-sans: var(--font-satoshi);
+  --primary-900: #0a2540; /* Dark navy - headers, important text */
+  --primary-800: #0d3a5f;
+  --primary-700: #0f4c81;
+  --primary-600: #1366a3; /* Main brand color */
+  --primary-500: #1e7fc1;
+  --primary-400: #3b9fe3; /* Interactive elements */
+  --primary-300: #6bb8ec;
+  --primary-200: #a3d5f5;
+  --primary-100: #d4ecfa;
+  --primary-50: #ebf5fd; /* Backgrounds */
+
+  /* Accent - Electric Cyan (Bold & Modern) */
+  --accent-600: #00d9ff; /* Main accent */
+  --accent-500: #33e2ff;
+  --accent-400: #66ebff;
+  --accent-300: #99f3ff;
+
+  /* Secondary - Purple (AI/Tech feel) */
+  --secondary-600: #6366f1; /* For AI features */
+  --secondary-500: #818cf8;
+  --secondary-400: #a5b4fc;
+
+  /* Success/Growth */
+  --success-600: #10b981;
+  --success-500: #34d399;
+
+  /* Warning/Alert */
+  --warning-600: #f59e0b;
+  --warning-500: #fbbf24;
+
+  /* Error */
+  --error-600: #ef4444;
+  --error-500: #f87171;
+
+  /* Neutrals */
+  --gray-900: #111827; /* Main text */
+  --gray-800: #1f2937;
+  --gray-700: #374151;
+  --gray-600: #4b5563;
+  --gray-500: #6b7280; /* Secondary text */
+  --gray-400: #9ca3af;
+  --gray-300: #d1d5db; /* Borders */
+  --gray-200: #e5e7eb;
+  --gray-100: #f3f4f6; /* Light backgrounds */
+  --gray-50: #f9fafb;
+  --white: #ffffff;
 }
