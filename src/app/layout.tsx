@@ -3,6 +3,7 @@ import { type Metadata } from "next";
 import localFont from "next/font/local";
 import { ThemeProvider } from "~/components/theme-provider";
 import { AppContainer } from "~/components/ui/app-container";
+import { Providers } from "./providers";
 
 export const metadata: Metadata = {
   title: "Quaero",
@@ -51,17 +52,19 @@ export default function RootLayout({
     >
       <head nonce=""></head>
       <body>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {/* // TODO: remove shadow - for development */}
-          <AppContainer className="h-screen" shadow="lg" size="xl">
-            {children}
-          </AppContainer>
-        </ThemeProvider>
+        <Providers>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="light"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {/* // TODO: remove shadow - for development */}
+            <AppContainer className="h-screen" shadow="lg" size="xl">
+              {children}
+            </AppContainer>
+          </ThemeProvider>
+        </Providers>
       </body>
     </html>
   );
