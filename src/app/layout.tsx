@@ -59,10 +59,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            {/* // TODO: remove shadow - for development */}
-            <AppContainer className="h-screen" shadow="lg" size="xl">
-              {children}
-            </AppContainer>
+            <AppContainer size="xl">{children}</AppContainer>
           </ThemeProvider>
         </Providers>
       </body>
