@@ -63,7 +63,7 @@ export default function SearchInput({
                     {...field}
                     type="text"
                     placeholder={placeholder || "Search for businesses..."}
-                    className="w-full rounded-2xl border border-gray-300 p-5 pr-28 text-left text-lg shadow-sm transition-all duration-200 focus:ring-2 focus:ring-blue-400 focus:outline-none sm:text-xl"
+                    className="text-md w-full rounded-2xl border border-gray-300 p-5 pr-28 text-left shadow-sm transition-all duration-200 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                   />
 
                   {/* Buttons container at bottom-right */}

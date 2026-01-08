@@ -1,21 +1,16 @@
-"use client";
+"use cache";
 
 import SearchInput from "~/components/search/search-input";
 import { AppContainer } from "~/components/ui/app-container";
 import { Button } from "~/components/ui/button";
 import { CategoryCarousel } from "~/components/ui/category/category-carousel";
 import PlatformStatCard from "~/components/ui/landing/platform-stat-card";
-import PlatformStatCardSkeleton from "~/components/ui/landing/platform-stat-card-skelenton";
-import { useBusinessesIndexedCount } from "~/hooks/use-businesses";
-import { useCategories } from "~/hooks/use-categories";
+import { businessesAPI } from "~/lib/api/services/businesses";
+import { categoriesAPI } from "~/lib/api/services/categories";
 
-export default function HomePage() {
-  const { data: categories, isLoading, isError } = useCategories();
-  const {
-    data: businessCount,
-    isLoading: isLoadingBusinessCount,
-    isError: isErrorBusinessCount,
-  } = useBusinessesIndexedCount();
+export default async function HomePage() {
+  const categories = await categoriesAPI.getAll();
+  const businessCount = await businessesAPI.getIndexedBusinessCount();
   return (
     <AppContainer as="main" padding="none">
       <AppContainer
@@ -25,7 +20,7 @@ export default function HomePage() {
       >
         <div>
           <h1 className="mb-4 text-center text-4xl font-bold">
-            Discover & contact the worlds best businesses in your area
+            Discover & contact the best local businesses in your area
           </h1>
           <SearchInput defaultValue="" />
         </div>
@@ -36,9 +31,9 @@ export default function HomePage() {
       </AppContainer>
 
       <AppContainer as="section" padding="none">
-        {isLoading && <p>Loading...</p>}
-        {isError && <p>Error loading categories</p>}
-        {categories && <CategoryCarousel categories={categories} />}
+        {categories && (
+          <CategoryCarousel variant="pill" categories={categories} />
+        )}
       </AppContainer>
 
       <AppContainer as="section" paddingY="lg">
@@ -47,14 +42,10 @@ export default function HomePage() {
         </h2>
 
         <div className="mt-10 flex flex-col items-center justify-center gap-8 md:flex-row">
-          {isLoadingBusinessCount ? (
-            <PlatformStatCardSkeleton />
-          ) : (
-            <PlatformStatCard
-              content={`${businessCount}+`}
-              footerText="Businesses Indexed"
-            />
-          )}
+          <PlatformStatCard
+            content={`${businessCount}+`}
+            footerText="Businesses Indexed"
+          />
           <PlatformStatCard content="<5 Secs" footerText="Time to contact" />
           <PlatformStatCard content="34k+" footerText="Categories" />
         </div>

@@ -7,7 +7,7 @@ const containerVariants = cva(
   "w-full mx-auto", // Base styles - full width, centered
   {
     variants: {
-      // Max width variants
+      // Max width variants with better mobile-first approach
       size: {
         sm: "max-w-2xl", // 672px - Narrow content (blogs, forms)
         md: "max-w-4xl", // 896px - Medium content (dashboards)
@@ -17,31 +17,34 @@ const containerVariants = cva(
         full: "max-w-none", // No max width
       },
 
-      // Padding variants (x-axis and y-axis)
+      // Simplified padding variants - mobile-first responsive
       padding: {
-        none: "px-0 py-0",
-        sm: "px-4 py-4 md:px-6 md:py-6",
-        md: "px-4 py-6 md:px-8 md:py-8 lg:px-12 lg:py-10",
-        lg: "px-6 py-8 md:px-12 md:py-12 lg:px-16 lg:py-16",
-        xl: "px-8 py-12 md:px-16 md:py-16 lg:px-24 lg:py-20",
+        none: "p-0",
+        xs: "p-2 sm:p-3 md:p-4",
+        sm: "p-4 sm:p-5 md:p-6 lg:p-8",
+        md: "p-4 sm:p-6 md:p-8 lg:p-12",
+        lg: "p-6 sm:p-8 md:p-12 lg:p-16",
+        xl: "p-8 sm:p-12 md:p-16 lg:p-24",
       },
 
-      // Padding X-axis only (horizontal)
+      // Padding X-axis only (horizontal) - mobile-first
       paddingX: {
         none: "px-0",
-        sm: "px-4 md:px-6",
-        md: "px-4 md:px-8 lg:px-12",
-        lg: "px-6 md:px-12 lg:px-16",
-        xl: "px-8 md:px-16 lg:px-24",
+        xs: "px-2 sm:px-3 md:px-4",
+        sm: "px-2 sm:px-5 md:px-6 lg:px-8",
+        md: "px-4 sm:px-6 md:px-8 lg:px-12",
+        lg: "px-6 sm:px-8 md:px-12 lg:px-16",
+        xl: "px-8 sm:px-12 md:px-16 lg:px-24",
       },
 
-      // Padding Y-axis only (vertical)
+      // Padding Y-axis only (vertical) - mobile-first
       paddingY: {
         none: "py-0",
-        sm: "py-4 md:py-6",
-        md: "py-6 md:py-8 lg:py-10",
-        lg: "py-8 md:py-12 lg:py-16",
-        xl: "py-12 md:py-16 lg:py-20",
+        xs: "py-2 sm:py-3 md:py-4",
+        sm: "py-2 sm:py-5 md:py-6 lg:py-8",
+        md: "py-6 sm:py-8 md:py-10 lg:py-12",
+        lg: "py-8 sm:py-10 md:py-12 lg:py-16",
+        xl: "py-12 sm:py-14 md:py-16 lg:py-20",
       },
 
       // Background variants
@@ -51,14 +54,18 @@ const containerVariants = cva(
         muted: "bg-muted",
         accent: "bg-accent",
         card: "bg-card",
+        primary: "bg-primary",
+        secondary: "bg-secondary",
       },
 
       // Border variants
       border: {
         none: "",
-        default: "border",
-        top: "border-t",
-        bottom: "border-b",
+        default: "border border-border",
+        top: "border-t border-border",
+        bottom: "border-b border-border",
+        x: "border-x border-border",
+        y: "border-y border-border",
       },
 
       // Shadow variants
@@ -67,6 +74,7 @@ const containerVariants = cva(
         sm: "shadow-sm",
         md: "shadow-md",
         lg: "shadow-lg",
+        xl: "shadow-xl",
       },
 
       // Rounded corners
@@ -76,6 +84,27 @@ const containerVariants = cva(
         md: "rounded-md",
         lg: "rounded-lg",
         xl: "rounded-xl",
+        "2xl": "rounded-2xl",
+        "3xl": "rounded-3xl",
+      },
+
+      // Display variants for common layouts
+      display: {
+        block: "block",
+        flex: "flex",
+        "flex-col": "flex flex-col",
+        grid: "grid",
+        inline: "inline-block",
+      },
+
+      // Gap variants (useful when display is flex or grid)
+      gap: {
+        none: "gap-0",
+        xs: "gap-2",
+        sm: "gap-4",
+        md: "gap-6",
+        lg: "gap-8",
+        xl: "gap-12",
       },
     },
     defaultVariants: {
@@ -95,6 +124,12 @@ export interface AppContainerProps
     VariantProps<typeof containerVariants> {
   as?: React.ElementType;
   children: React.ReactNode;
+  // Allow full control when needed
+  fullWidth?: boolean;
+  // Center content vertically
+  centerY?: boolean;
+  // Center content horizontally
+  centerX?: boolean;
 }
 
 const AppContainer = React.forwardRef<HTMLDivElement, AppContainerProps>(
@@ -109,6 +144,11 @@ const AppContainer = React.forwardRef<HTMLDivElement, AppContainerProps>(
       border,
       shadow,
       rounded,
+      display,
+      gap,
+      fullWidth = false,
+      centerY = false,
+      centerX = false,
       as: Component = "div",
       children,
       ...props
@@ -120,7 +160,7 @@ const AppContainer = React.forwardRef<HTMLDivElement, AppContainerProps>(
         ref={ref}
         className={cn(
           containerVariants({
-            size,
+            size: fullWidth ? "full" : size,
             // If paddingX or paddingY is specified, ignore padding
             padding: paddingX || paddingY ? "none" : padding,
             paddingX,
@@ -129,8 +169,15 @@ const AppContainer = React.forwardRef<HTMLDivElement, AppContainerProps>(
             border,
             shadow,
             rounded,
-            className,
+            display,
+            gap,
           }),
+          {
+            "min-h-screen": centerY,
+            "items-center": centerY && display?.includes("flex"),
+            "justify-center": centerX && display?.includes("flex"),
+          },
+          className,
         )}
         {...props}
       >

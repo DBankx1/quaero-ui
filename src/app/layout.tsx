@@ -59,7 +59,9 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <AppContainer size="xl">{children}</AppContainer>
+            <AppContainer paddingX="sm" paddingY="none">
+              {children}
+            </AppContainer>
           </ThemeProvider>
         </Providers>
       </body>

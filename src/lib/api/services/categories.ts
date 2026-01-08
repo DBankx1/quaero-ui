@@ -6,7 +6,7 @@ export const categoriesAPI = {
    * Get all Categories
    */
   getAll: async (): Promise<Category[]> => {
-    return apiClient.get<Category[]>("/categories");
+    return apiClient.get<Category[]>("/categories", { cache: "force-cache" });
   },
 
   /**
@@ -15,13 +15,17 @@ export const categoriesAPI = {
   getByLevel: async (
     level: "primary" | "secondary" | "tertiary",
   ): Promise<Category[]> => {
-    return apiClient.get<Category[]>(`/categories?level=${level}`);
+    return apiClient.get<Category[]>(`/categories?level=${level}`, {
+      cache: "force-cache",
+    });
   },
 
   /**
    * Search Categories by keywords
    */
   searchByKeywords: async (keywords: string[]): Promise<Category[]> => {
-    return apiClient.get<Category[]>(`/categories/keywords?q=${keywords}`);
+    return apiClient.get<Category[]>(`/categories/keywords?q=${keywords}`, {
+      cache: "force-cache",
+    });
   },
 };

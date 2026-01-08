@@ -1,12 +1,12 @@
-import type { Business } from "~/types/Business";
+import type { Business, BusinessSearchResponse } from "~/types/business";
 import { apiClient } from "../client";
 
 export const businessesAPI = {
   /**
    * Search business by query
    */
-  search: async (s: string): Promise<Business[]> => {
-    return apiClient.get<Business[]>(
+  search: async (s: string): Promise<BusinessSearchResponse> => {
+    return apiClient.get<BusinessSearchResponse>(
       `/businesses/search?s=${encodeURIComponent(s)}`,
     );
   },
@@ -36,6 +36,6 @@ export const businessesAPI = {
    * Get indexed business count
    */
   getIndexedBusinessCount: async (): Promise<number> => {
-    return apiClient.get<number>("/businesses/count");
+    return apiClient.get<number>("/businesses/count", { cache: "force-cache" });
   },
 };

@@ -1,3 +1,4 @@
+import { AppContainer } from "~/components/ui/app-container";
 import AppNavigationBar from "~/components/ui/navigation-bar/app-navigation-bar";
 
 function Layout({ children }: Readonly<{ children: React.ReactNode }>) {
