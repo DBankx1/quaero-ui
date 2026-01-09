@@ -4,27 +4,13 @@ import { SlidersHorizontal } from "lucide-react";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import BusinessSearchActionBadge from "./business-search-action-badge";
+import type { BusinessSearchAction } from "~/types/business";
 
-const businessSearchActions = [
-  {
-    label: "Shop Online",
-    value: "shop_online",
-  },
-  {
-    label: "Open Now",
-    value: "open_now",
-  },
-  {
-    label: "24/7",
-    value: "24_7",
-  },
-  {
-    label: "Highest Rated",
-    value: "highest_rated",
-  },
-];
+interface Props {
+  actions: BusinessSearchAction[];
+}
 
-function BusinessSearchActions() {
+function BusinessSearchActions({ actions }: Readonly<Props>) {
   return (
     <div className="mt-4 flex flex-wrap gap-2">
       <Button variant="outline" size="sm" className="rounded-full">
@@ -32,8 +18,12 @@ function BusinessSearchActions() {
         Filters
       </Button>
 
-      {businessSearchActions.map((action) => (
-        <BusinessSearchActionBadge key={action.value} label={action.label} />
+      {actions.map((action) => (
+        <BusinessSearchActionBadge
+          key={action.value}
+          label={action.label}
+          action={action.action}
+        />
       ))}
     </div>
   );

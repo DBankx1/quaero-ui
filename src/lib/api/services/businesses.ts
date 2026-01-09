@@ -8,6 +8,7 @@ export const businessesAPI = {
   search: async (s: string): Promise<BusinessSearchResponse> => {
     return apiClient.get<BusinessSearchResponse>(
       `/businesses/search?s=${encodeURIComponent(s)}`,
+      { cache: "force-cache" },
     );
   },
 

@@ -33,3 +33,9 @@ export interface BusinessSearchResponse {
   results: Business[];
   total_count: number;
 }
+
+export interface BusinessSearchAction {
+  label: string;
+  value: string;
+  action?: any;
+}

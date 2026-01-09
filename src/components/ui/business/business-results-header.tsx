@@ -8,24 +8,44 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import { useState } from "react";
 import BusinessSearchActions from "./business-search-actions";
+
+type SortOption = "relevance" | "rating" | "closest" | "reviewed" | "name";
 
 interface BusinessResultsHeaderProps {
   searchQuery: string;
   businessSearchResponse: BusinessSearchResponse;
+  sortBy: SortOption;
+  onSortChange: (value: SortOption) => void;
 }
 
 function BusinessResultsHeader({
   searchQuery,
   businessSearchResponse,
-}: BusinessResultsHeaderProps) {
-  const [sortBy, setSortBy] = useState("relevance");
-
-  const handleSortChange = (value: string) => {
-    console.log(`Sort by: ${value}`);
-    setSortBy(value);
-  };
+  sortBy,
+  onSortChange,
+}: Readonly<BusinessResultsHeaderProps>) {
+  const businessSearchActions = [
+    {
+      label: "Shop Online",
+      value: "shop_online",
+    },
+    {
+      label: "Open Now",
+      value: "open_now",
+    },
+    {
+      label: "24/7",
+      value: "24_7",
+    },
+    {
+      label: "Highest Rated",
+      value: "highest_rated",
+      action: () => {
+        onSortChange("rating");
+      },
+    },
+  ];
 
   return (
     <div className="bg-muted/30 border-b">
@@ -33,12 +53,7 @@ function BusinessResultsHeader({
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h1 className="text-foreground truncate text-xl font-bold sm:text-2xl">
-              {searchQuery || "Businesses"}{" "}
-              {/* {categorySlug && (
-                  <span className="text-muted-foreground">
-                    in {categorySlug}
-                  </span>
-                )} */}
+              {searchQuery || "Businesses"}
             </h1>
             <p className="text-muted-foreground mt-1 text-sm">
               ({businessSearchResponse.total_count} Result
@@ -47,7 +62,7 @@ function BusinessResultsHeader({
           </div>
 
           <div className="flex items-center gap-2">
-            <Select value={sortBy} onValueChange={handleSortChange}>
+            <Select value={sortBy} onValueChange={onSortChange}>
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Sort by" />
               </SelectTrigger>
@@ -62,7 +77,7 @@ function BusinessResultsHeader({
           </div>
         </div>
 
-        <BusinessSearchActions />
+        <BusinessSearchActions actions={businessSearchActions} />
       </div>
     </div>
   );

@@ -81,9 +81,9 @@ function BusinessSearchItem({ business }: Readonly<Props>) {
 
             {business.category_slugs && business.category_slugs.length > 0 && (
               <div className="relative z-10 flex flex-wrap gap-2">
-                {business.category_slugs.slice(0, 4).map((category, idx) => (
+                {business.category_slugs.slice(0, 4).map((category) => (
                   <button
-                    key={idx}
+                    key={category}
                     onClick={() => handleCategoryClick(category)}
                     className=""
                   >

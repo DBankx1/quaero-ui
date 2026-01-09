@@ -13,13 +13,7 @@ const config = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "flynncompanies.com",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: "immich.app",
-        pathname: "/**",
+        hostname: "**",
       },
     ],
   },

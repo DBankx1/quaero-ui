@@ -14,8 +14,8 @@ function BusinessList({ businesses }: Readonly<Props>) {
       <div className="p-4">
         {businesses.results.length > 0 ? (
           <div className="flex flex-col gap-2">
-            {businesses.results.map((business: Business, index: number) => (
-              <BusinessSearchItem key={business._id} business={business} />
+            {businesses.results.map((business: Business) => (
+              <BusinessSearchItem key={business.name} business={business} />
             ))}
           </div>
         ) : (

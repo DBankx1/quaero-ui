@@ -11,7 +11,7 @@ interface Props {
 
 function TextReadMore({ text, isExpanded, setIsExpanded }: Readonly<Props>) {
   return (
-    <div className="relative mb-4">
+    <div className="relative mb-2">
       <p
         className={cn(
           "text-muted-foreground text-sm leading-relaxed",
