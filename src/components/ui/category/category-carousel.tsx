@@ -18,6 +18,9 @@ export function CategoryCarousel({
   variant = "default",
   speed = 0.3,
 }: Readonly<Props>) {
+  React.useEffect(() => {
+    localStorage.setItem("categories", JSON.stringify(categories));
+  }, [categories]);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const isPaused = React.useRef(false);
 

@@ -141,7 +141,9 @@ function BusinessSearchItem({ business }: Readonly<Props>) {
                     rel="noopener noreferrer"
                   >
                     <Globe className="h-4 w-4" />
-                    <span className="hidden sm:inline">Website</span>
+                    <span className="hidden sm:inline">
+                      {business.is_online_shop ? "Shop Now" : "Website"}
+                    </span>
                   </a>
                 </Button>
               )}

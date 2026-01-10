@@ -8,11 +8,13 @@ export interface Business {
   rating: number;
   category_slugs: string[];
   services?: string[];
+  is_online_shop: boolean;
   reviewCount?: number;
   categories?: string[];
   description?: string;
   hours?: string;
-  is24Hours?: boolean;
+  is_24_hrs?: boolean;
+  is_open_now?: boolean;
   logo?: string;
   image?: string;
   verified?: boolean;
@@ -39,3 +41,41 @@ export interface BusinessSearchAction {
   value: string;
   action?: any;
 }
+
+export type Filters = {
+  is_online_shop?: boolean;
+  is_24_hrs?: boolean;
+  is_open_now?: boolean;
+};
+
+export type SortOption =
+  | "relevance"
+  | "rating"
+  | "closest"
+  | "reviewed"
+  | "name";
+
+export type BusinessSearchActions =
+  | {
+      type: "filter";
+      label: string;
+      key: keyof Filters;
+    }
+  | {
+      type: "sort";
+      label: string;
+      value: SortOption;
+    };
+
+export const ACTIONS: BusinessSearchActions[] = [
+  { type: "filter", label: "Shop Online", key: "is_online_shop" },
+  { type: "filter", label: "Open Now", key: "is_open_now" },
+  { type: "filter", label: "24/7", key: "is_24_hrs" },
+  { type: "sort", label: "Highest Rated", value: "rating" },
+];
+
+export type UISearchAction = {
+  label: string;
+  active: boolean;
+  onClick: () => void;
+};

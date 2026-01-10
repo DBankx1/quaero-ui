@@ -1,6 +1,13 @@
 "use client";
 
-import type { BusinessSearchResponse } from "~/types/business";
+import { useMemo } from "react";
+import {
+  type BusinessSearchResponse,
+  type SortOption,
+  type Filters,
+  type UISearchAction,
+  ACTIONS,
+} from "~/types/business";
 import {
   Select,
   SelectContent,
@@ -10,42 +17,56 @@ import {
 } from "~/components/ui/select";
 import BusinessSearchActions from "./business-search-actions";
 
-type SortOption = "relevance" | "rating" | "closest" | "reviewed" | "name";
-
 interface BusinessResultsHeaderProps {
   searchQuery: string;
   businessSearchResponse: BusinessSearchResponse;
   sortBy: SortOption;
+  filters: Filters;
   onSortChange: (value: SortOption) => void;
+  onFilterChange: (filters: Filters) => void;
 }
 
-function BusinessResultsHeader({
+function buildActions(
+  sortBy: SortOption,
+  filters: Filters,
+  onSortChange: (value: SortOption) => void,
+  onFilterChange: (filters: Filters) => void,
+): UISearchAction[] {
+  return ACTIONS.map((action) => {
+    if (action.type === "sort") {
+      return {
+        label: action.label,
+        active: sortBy === action.value,
+        onClick: () => onSortChange(action.value),
+      };
+    }
+
+    const isActive = filters[action.key] === true;
+
+    return {
+      label: action.label,
+      active: isActive,
+      onClick: () =>
+        onFilterChange({
+          ...filters,
+          [action.key]: !isActive,
+        }),
+    };
+  });
+}
+
+export default function BusinessResultsHeader({
   searchQuery,
   businessSearchResponse,
   sortBy,
+  filters,
   onSortChange,
+  onFilterChange,
 }: Readonly<BusinessResultsHeaderProps>) {
-  const businessSearchActions = [
-    {
-      label: "Shop Online",
-      value: "shop_online",
-    },
-    {
-      label: "Open Now",
-      value: "open_now",
-    },
-    {
-      label: "24/7",
-      value: "24_7",
-    },
-    {
-      label: "Highest Rated",
-      value: "highest_rated",
-      action: () => {
-        onSortChange("rating");
-      },
-    },
-  ];
+  const actions = useMemo(
+    () => buildActions(sortBy, filters, onSortChange, onFilterChange),
+    [sortBy, filters, onSortChange, onFilterChange],
+  );
 
   return (
     <div className="bg-muted/30 border-b">
@@ -61,26 +82,22 @@ function BusinessResultsHeader({
             </p>
           </div>
 
-          <div className="flex items-center gap-2">
-            <Select value={sortBy} onValueChange={onSortChange}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Sort by" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="relevance">Relevance</SelectItem>
-                <SelectItem value="rating">Highest Rated</SelectItem>
-                <SelectItem value="closest">Closest</SelectItem>
-                <SelectItem value="reviewed">Most Reviewed</SelectItem>
-                <SelectItem value="name">Name (A-Z)</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+          <Select value={sortBy} onValueChange={onSortChange}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Sort by" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="relevance">Relevance</SelectItem>
+              <SelectItem value="rating">Highest Rated</SelectItem>
+              <SelectItem value="closest">Closest</SelectItem>
+              <SelectItem value="reviewed">Most Reviewed</SelectItem>
+              <SelectItem value="name">Name (A–Z)</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
-        <BusinessSearchActions actions={businessSearchActions} />
+        <BusinessSearchActions actions={actions} />
       </div>
     </div>
   );
 }
-
-export default BusinessResultsHeader;

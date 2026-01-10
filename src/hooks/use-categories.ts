@@ -1,27 +1,36 @@
-// hooks/use-Categories.ts
-import { useQuery } from "@tanstack/react-query";
+"use client";
+import { useEffect, useMemo, useState } from "react";
 import { categoriesAPI } from "~/lib/api/services/categories";
 
-export function useCategories() {
-  return useQuery({
-    queryKey: ["Categories"],
-    queryFn: () => categoriesAPI.getAll(),
-  });
-}
+export function useCategoryMap(localStorageKey = "categories") {
+  const [categories, setCategories] = useState<
+    { slug: string; name: string }[]
+  >([]);
 
-export function useCategoriesByLevel(
-  level: "primary" | "secondary" | "tertiary",
-) {
-  return useQuery({
-    queryKey: ["Categories", "level", level],
-    queryFn: () => categoriesAPI.getByLevel(level),
-  });
-}
+  useEffect(() => {
+    const stored = localStorage.getItem(localStorageKey);
+    if (stored) {
+      try {
+        setCategories(JSON.parse(stored));
+      } catch {
+        setCategories([]);
+      }
+    } else {
+      categoriesAPI
+        .getAll()
+        .then((data: { slug: string; name: string }[]) => {
+          setCategories(data);
+          localStorage.setItem(localStorageKey, JSON.stringify(data));
+        })
+        .catch(() => setCategories([]));
+    }
+  }, [localStorageKey]);
 
-export function useSearchCategoriesByKeywords(keywords: string[]) {
-  return useQuery({
-    queryKey: ["Categories", "search", keywords],
-    queryFn: () => categoriesAPI.searchByKeywords(keywords),
-    enabled: keywords.length > 0,
-  });
+  const categoryMap = useMemo(() => {
+    const map = new Map<string, string>();
+    categories.forEach((cat) => map.set(cat.slug, cat.name));
+    return map;
+  }, [categories]);
+
+  return categoryMap;
 }
