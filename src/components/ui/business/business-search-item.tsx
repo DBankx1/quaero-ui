@@ -9,9 +9,10 @@ import * as React from "react";
 import TextReadMore from "../text-read-more";
 import { Button } from "../button";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { formatAddress } from "~/lib/format-address";
 import { cn } from "~/lib/utils";
+import { hoverEffect } from "~/lib/styles";
 
 interface Props {
   business: Business;
@@ -19,6 +20,8 @@ interface Props {
 
 function BusinessSearchItem({ business }: Readonly<Props>) {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const query = searchParams.get("s") ?? "";
   const [isDescriptionExpanded, setIsDescriptionExpanded] =
     React.useState(false);
 
@@ -26,7 +29,7 @@ function BusinessSearchItem({ business }: Readonly<Props>) {
   const businessUrl = `/business/${encodeURIComponent(business.name)}`;
 
   const handleCategoryClick = (categorySlug: string) => {
-    router.push(`/search?category=${categorySlug}`);
+    router.push(`/search?s=${query}&category=${categorySlug}`);
   };
 
   return (
@@ -87,10 +90,7 @@ function BusinessSearchItem({ business }: Readonly<Props>) {
                     onClick={() => handleCategoryClick(category)}
                     className=""
                   >
-                    <Badge
-                      variant="secondary"
-                      className="from-muted to-muted/50 hover:from-primary/10 border-border/50 cursor-pointer border bg-gradient-to-r text-xs font-medium shadow-sm transition-all duration-300 hover:scale-105 hover:to-purple-500/10"
-                    >
+                    <Badge variant="secondary" className={`${hoverEffect}`}>
                       {category}
                     </Badge>
                   </button>

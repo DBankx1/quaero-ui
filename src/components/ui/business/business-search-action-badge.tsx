@@ -1,6 +1,7 @@
 "use client";
 
 import { Badge } from "~/components/ui/badge";
+import { badgeActive, badgeBase, badgeHover } from "~/lib/styles";
 import { cn } from "~/lib/utils";
 
 interface Props {
@@ -26,12 +27,7 @@ function BusinessSearchActionBadge({
           onClick();
         }
       }}
-      className={cn(
-        "cursor-pointer rounded-full px-3 py-1 transition-colors select-none",
-        active
-          ? "bg-primary hover:bg-primary/90"
-          : "bg-secondary text-primary hover:bg-secondary/80",
-      )}
+      className={cn(badgeBase, active ? badgeActive : badgeHover) + " h-8"}
     >
       {label}
     </Badge>

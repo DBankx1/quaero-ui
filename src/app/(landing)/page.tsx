@@ -32,7 +32,7 @@ export default async function HomePage() {
 
       <AppContainer as="section" padding="none">
         {categories && (
-          <CategoryCarousel variant="pill" categories={categories} />
+          <CategoryCarousel variant="default" categories={categories} />
         )}
       </AppContainer>
 

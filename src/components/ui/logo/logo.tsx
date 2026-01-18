@@ -35,8 +35,9 @@ export function Logo({ business }: Readonly<Props>) {
               src={business.logo!}
               alt={`${business.name} logo`}
               fill
-              className="object-cover transition-transform duration-500 group-hover/logo:scale-110"
+              className="object-contain transition-transform duration-500 group-hover/logo:scale-110"
               onError={() => setHasError(true)}
+              unoptimized
             />
           )}
         </div>

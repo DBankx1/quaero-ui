@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import {
   Form,
@@ -14,6 +14,7 @@ import { Button } from "~/components/ui/button";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LucideSearch, Mic } from "lucide-react";
+import { useEffect } from "react";
 
 const formSchema = z.object({
   search: z
@@ -33,13 +34,19 @@ export default function SearchInput({
   onSubmit,
 }: Readonly<SearchInputProps>) {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      search: defaultValue || "",
+      search: searchParams.get("s") ?? "",
     },
   });
+
+  useEffect(() => {
+    const searchQuery = searchParams.get("s") ?? "";
+    form.setValue("search", searchQuery);
+  }, [searchParams, form]);
 
   const handleDefaultSubmit = (values: z.infer<typeof formSchema>) => {
     router.push(`/search?s=${encodeURIComponent(values.search)}`);
@@ -63,11 +70,11 @@ export default function SearchInput({
                     {...field}
                     type="text"
                     placeholder={placeholder || "Search for businesses..."}
-                    className="text-md w-full rounded-2xl border border-gray-300 p-5 pr-28 text-left shadow-sm transition-all duration-200 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                    className="text-md w-full rounded-full border border-gray-300 p-5 pr-28 text-left shadow-sm transition-all duration-200 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                   />
 
                   {/* Buttons container at bottom-right */}
-                  <div className="absolute right-3 bottom-3 flex space-x-3">
+                  <div className="absolute right-3 bottom-3/13 flex space-x-3">
                     {/* Voice recognition button */}
                     <Button
                       type="button"
